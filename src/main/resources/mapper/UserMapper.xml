@@ -25,7 +25,7 @@
 	</resultMap>
 	
 	<select id="findByName" resultMap="baseResultMap" parameterType="java.lang.String">
-		select u.*,r.name r_name,r.role_id,r.role_id r_role_id,r.state r_state,rp.code rp_code 
+		select u.*,r.name r_name,r.role_id,rp.role_id r_role_id,r.state r_state,rp.* 
 		from user u 
 		join user_role ur 
 		on u.id=ur.user_id 
@@ -33,6 +33,6 @@
 		on ur.role_id=r.role_id
 		join role_privilege rp 
 		on r.role_id=rp.role_id  
-		where u name=#{value}
+		where u.name=#{value}
 	</select>
 </mapper>

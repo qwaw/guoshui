@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiyou100.mapper.InfoMapper">
+	<select id="getAllInfo" resultType="info">
+		select * from info where state='1'
+	</select>
+	
+	<select id="showInfoOne" parameterType="java.lang.String" resultType="info">
+		select * from info where info_id=#{value}
+	</select>
+</mapper>

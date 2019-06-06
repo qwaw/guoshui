@@ -88,30 +88,45 @@
 	
 	<!-- 缓存管理器 -->
 	<bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager"></bean>
-	
+	<!-- 创建角色判断对象 -->
+	<bean id="roleOrOne" class="com.zhiyou100.util.CustomRolesAuthorizationFilter"></bean>
 	<!-- 配置shiro的过滤器工厂，id值要对应web.xml中设置的过滤器filter-name一致 -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager"></property>
 		<!-- 配置登录的请求地址 -->
 		<property name="loginUrl" value="/login"></property>
 		<!-- 配置登录成功后跳转的地址，如果访问的是非login请求，则跳转的访问的页面 -->
-		<property name="successUrl" value="/user"></property>
+		<property name="successUrl" value="/gzzy"></property>
 		<!-- 如果请求的资源，不在你的权限范围之内，直接跳转到403请求地址 -->
 		<property name="unauthorizedUrl" value="/403"></property>
+		<!-- 指定角色判断 -->
+		<property name="filters">  
+            <map>    
+                 <entry key="roles" value-ref="roleOrOne"/>
+            </map>
+        </property>
 		<!-- 配置权限 -->
 		<property name="filterChainDefinitions">
 			<value>
 			<!-- anon表示此地址不需要任何的访问权限即可访问 -->
-				common/**=anon
-				css/**=anon
-				images/**=anon
-				js/**=anon
+				/common/**=anon
+				/css/**=anon
+				/images/**=anon
+				/js/**=anon
+				/WEB-INF/**=anon
+				/login1=anon
+				<!-- 工作主页的角色和权限 -->
+				<!-- /gzzy/**=perms[gzzy] -->
+				/gzzy/**=roles["1,2,3,4,5,6"]
+				/nsfw/**=roles["1,2,3"]
 				<!-- 表示进入user路径必须拥有grzx权限的用户 -->
-				/user=perms[grzx]
+				<!-- /user=perms[hqfw]
+				/gzzy/**=perms[gzzy]
+				/wdkj/**=perms[wdkj] -->
 				<!-- 想要使用/user/delete路径，必须要用户的角色为1 -->
-				/user/delete=roles[1]
+				<!-- /user/delete=roles[1]
 				/user/add=roles[2]
-				/user/edit/**=roles[1]
+				/user/edit/**=roles[1] -->
 				<!-- 所有的请求(除去上面的无需访问权限的资源)，都需要通过登录验证，如果未登录则跳转/login -->
 				/**=authc
 			</value>

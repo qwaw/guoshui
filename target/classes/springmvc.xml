@@ -55,7 +55,7 @@ http://www.springframework.org/schema/mvc/spring-mvc.xsd
 	<mvc:resources location="/pages/" mapping="/pages/**"></mvc:resources>
 	<mvc:resources location="/font/" mapping="/font/**"></mvc:resources>
 	<mvc:resources location="/admin/" mapping="/admin/**"></mvc:resources>
-	<mvc:resources location="/uploads/" mapping="/uploads/**"></mvc:resources>
+	<mvc:resources location="/upload/" mapping="/upload/**"></mvc:resources>
 
 	<!-- jsp的视图解析器 -->
 	<bean  class="org.springframework.web.servlet.view.InternalResourceViewResolver">

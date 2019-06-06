@@ -1,6 +1,7 @@
 package com.zhiyou100.pojo;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ public class User {
 	private String state;
 	private String memo;
 	private List<Role> roles;
-	private Set<String> roleName;
+	private Set<String> rolesName;
 	public String getId() {
 		return id;
 	}
@@ -98,18 +99,25 @@ public class User {
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
-	public Set<String> getRoleName() {
-		return roleName;
+	//将属性中的role_id全部放到rolesName中
+	public Set<String> getRolesName() {
+		rolesName =new HashSet<>();
+		if(roles!=null && roles.size()>0) {
+			for(Role role:roles) {
+				rolesName.add(role.getRole_id());
+			}
+		}
+		return rolesName;
 	}
-	public void setRoleName(Set<String> roleName) {
-		this.roleName = roleName;
+	public void setRolesName(Set<String> rolesName) {
+		this.rolesName = rolesName;
 	}
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", dept=" + dept + ", account=" + account + ", password="
 				+ password + ", headImg=" + headImg + ", gender=" + gender + ", email=" + email + ", mobile=" + mobile
-				+ ", birthday=" + birthday + ", state=" + state + ", memo=" + memo + ", roles=" + roles + ", roleName="
-				+ roleName + "]";
+				+ ", birthday=" + birthday + ", state=" + state + ", memo=" + memo + ", roles=" + roles + ", rolesName="
+				+ rolesName + "]";
 	}
 
 }

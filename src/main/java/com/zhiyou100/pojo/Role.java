@@ -1,5 +1,6 @@
 package com.zhiyou100.pojo;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -9,7 +10,7 @@ public class Role {
 	private String name;
 	private String state;
 	private List<Privilege> privileges;
-	private Set<String> privilegeName;
+	private Set<String> privilegesName;
 	
 	public List<Privilege> getPrivileges() {
 		return privileges;
@@ -35,16 +36,22 @@ public class Role {
 	public void setState(String state) {
 		this.state = state;
 	}
-	public Set<String> getPrivilegeName() {
-		return privilegeName;
+	public Set<String> getPrivilegesName() {
+		privilegesName =new HashSet<>();
+		if(privileges!=null && privileges.size()>0) {
+			for(Privilege privilege:privileges) {
+				privilegesName.add(privilege.getCode());
+			}
+		}
+		return privilegesName;
 	}
-	public void setPrivilegeName(Set<String> privilegeName) {
-		this.privilegeName = privilegeName;
+	public void setPrivilegesName(Set<String> privilegesName) {
+		this.privilegesName = privilegesName;
 	}
 	@Override
 	public String toString() {
 		return "Role [role_id=" + role_id + ", name=" + name + ", state=" + state + ", privileges=" + privileges
-				+ ", privilegeName=" + privilegeName + "]";
+				+ ", privilegesName=" + privilegesName + "]";
 	}
 
 }

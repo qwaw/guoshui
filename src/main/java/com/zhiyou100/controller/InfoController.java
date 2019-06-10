@@ -18,9 +18,7 @@ public class InfoController {
 	@RequestMapping("/gzzy/showInfoOne")
 	public String showInfoOne(String infoId,HttpSession session) {
 		//获取当前公告
-		System.out.println(infoId);
 		Info info=infoService.showInfoOne(infoId);
-		System.out.println(info);
 		session.setAttribute("infoOne", info);
 		return "home/infoViewUI";
 	}

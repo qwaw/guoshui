@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -18,14 +19,17 @@
 
 <!DOCTYPE HTML>
 <html>
-  <head>
-    <%@include file="/common/header.jsp"%>
-    <title>年度投诉统计图</title>
-  </head>
-  <script type="text/javascript" src="${basePath }js/fusioncharts/fusioncharts.js"></script>
-  <script type="text/javascript" src="${basePath }js/fusioncharts/fusioncharts.charts.js"></script>
-  <script type="text/javascript" src="${basePath }js/fusioncharts/themes/fusioncharts.theme.fint.js"></script>
-  <script type="text/javascript">
+<head>
+<%@include file="/common/header.jsp"%>
+<title>年度投诉统计图</title>
+</head>
+<script type="text/javascript"
+	src="${basePath }js/fusioncharts/fusioncharts.js"></script>
+<script type="text/javascript"
+	src="${basePath }js/fusioncharts/fusioncharts.charts.js"></script>
+<script type="text/javascript"
+	src="${basePath }js/fusioncharts/themes/fusioncharts.theme.fint.js"></script>
+<script type="text/javascript">
   
   //加载完dom元素后，执行
   $(document).ready(doAnnualStatistic());
@@ -39,7 +43,7 @@
 	  }
 	  //2、根据年份统计
 	  $.ajax({
-		  url:"${basePath }/nsfw/complain_getAnnualStatisticData.action",
+		  url:"${basePath }/nsfw/complain/complainGetAnnualStatisticData",
 		  data:{"year":year},
 		  type: "post",
 		  dataType:"json",
@@ -58,7 +62,44 @@
 				            "yAxisName": "投  诉  数",
 				            "theme": "fint"
 				         },
-				         "data": data.chartData
+				         "data": [{
+				        	 	"label":data.object[0].label,
+				        	 	"value":data.object[0].value
+			        	 	},{
+				        	 	"label":data.object[1].label,
+				        	 	"value":data.object[1].value
+			        	 	},{
+				        	 	"label":data.object[2].label,
+				        	 	"value":data.object[2].value
+			        	 	},
+			        	 	{
+				        	 	"label":data.object[3].label,
+				        	 	"value":data.object[3].value
+			        	 	},{
+				        	 	"label":data.object[4].label,
+				        	 	"value":data.object[4].value
+			        	 	},{
+				        	 	"label":data.object[5].label,
+				        	 	"value":data.object[5].value
+			        	 	},{
+				        	 	"label":data.object[6].label,
+				        	 	"value":data.object[6].value
+			        	 	},{
+				        	 	"label":data.object[7].label,
+				        	 	"value":data.object[7].value
+			        	 	},{
+				        	 	"label":data.object[8].label,
+				        	 	"value":data.object[8].value
+			        	 	},{
+				        	 	"label":data.object[9].label,
+				        	 	"value":data.object[9].value
+			        	 	},{
+				        	 	"label":data.object[10].label,
+				        	 	"value":data.object[10].value
+			        	 	},{
+				        	 	"label":data.object[11].label,
+				        	 	"value":data.object[11].value
+			        	 	}]
 				      }
 
 				  });
@@ -73,10 +114,20 @@
   }
  
   </script>
-  <body>
-  	<br>
-    <div style="text-align:center;width:100%;"><s:select id="year" list="#request.yearList" onchange="doAnnualStatistic()"></s:select></div>
-    <br>
-    <div id="chartContainer" style="text-align:center;width:100%;"></div>
-  </body>
+<body>
+	<br>
+	<div style="text-align: center; width: 100%;">
+		<select id="year" onchange="doAnnualStatistic()">
+			<c:forEach items="${yearList }" var="year">
+				<option value="${year }">${year }</option>
+			</c:forEach>
+		</select> <input type="button" onclick="javascript:history.go(-1)"
+			class="btnB2" value="返回" />
+	</div>
+	<br>
+	<div id="chartContainer" style="text-align: center; width: 100%;">
+
+	</div>
+
+</body>
 </html>

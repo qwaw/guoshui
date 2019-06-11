@@ -9,7 +9,7 @@ import com.zhiyou100.pojo.User;
 
 public interface NsfwMapper {
 
-	List<Role> selectAllRoles();
+	List<Role> selectAllRoles(String selectName);
 
 	int selectRoleByName(String roleName);
 

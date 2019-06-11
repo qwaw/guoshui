@@ -50,9 +50,9 @@ public class NsfwController {
 	}
 	
 	@RequestMapping("/role/listUI")
-	public String role_listUI(HttpSession session, @RequestParam(required=true,defaultValue="1")Integer pageNum) {
+	public String role_listUI(String selectName,HttpSession session, @RequestParam(required=true,defaultValue="1")Integer pageNum) {
 		PageHelper.startPage(pageNum,5);
-		List<Role> roles=nsfwService.selectAllRoles();
+		List<Role> roles=nsfwService.selectAllRoles(selectName);
 		PageInfo<Role> pageInfo=new PageInfo<>(roles);
 		session.setAttribute("rolePage", pageInfo);
 		return "nsfw/role/listUI";
@@ -99,4 +99,9 @@ public class NsfwController {
 		return "nsfw/role/listUI";
 	}
 
+	@RequestMapping("/role/deleteRoles")
+	@ResponseBody
+	public ResultUtil roleDeleteRoles(String roleIds [] ){
+		return nsfwService.roleDeleteRoles(roleIds);
+	}
 }

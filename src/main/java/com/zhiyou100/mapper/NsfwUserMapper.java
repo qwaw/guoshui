@@ -9,6 +9,10 @@ import com.zhiyou100.pojo.User;
 
 public interface NsfwUserMapper {
 
-	List<User> selectAllUsers();
+	List<User> selectAllUsers(String userName);
+
+	int addUser(User user);
+
+	int userDeleteUser(String userId);
 
 }

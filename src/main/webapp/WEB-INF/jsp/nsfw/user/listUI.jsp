@@ -19,27 +19,31 @@
       	}
       	//编辑
       	function doEdit(id){
-      		document.forms[0].action = "${basePath}nsfw/user_editUI.action?user.id=" + id;
+      		document.forms[0].action = "${basePath}nsfw/user/editUI?userId=" + id;
       		document.forms[0].submit();
       	}
       	//删除
       	function doDelete(id){
-      		document.forms[0].action = "${basePath}nsfw/user_delete.action?user.id=" + id;
-      		document.forms[0].submit();
-      	}
-      	//批量删除
-      	function doDeleteAll(){
-      		document.forms[0].action = "${basePath}nsfw/user_deleteSelected.action";
+      		document.forms[0].action = "${basePath}nsfw/user/deleteUser?userId=" + id;
       		document.forms[0].submit();
       	}
       	//导出用户列表
       	function doExportExcel(){
-      		window.open("${basePath}nsfw/user_exportExcel.action");
+      		window.open("${basePath}nsfw/user/exportExcel?pageNum=${userPage.pageNum}");
       	}
       	//导入
       	function doImportExcel(){
-      		document.forms[0].action = "${basePath}nsfw/user_importExcel.action";
-      		document.forms[0].submit();
+      		var file1=$("#file1");
+      		if(file1==null || file1.val()==""){
+      			alert("导入的文件不能为空");
+      			return;
+      		}else if(!file1.val().endsWith(".xls") && !file1.val().endsWith(".xlsx") ){
+      			alert("请上传xls或xlsx文件");
+      			return;
+      		}else{
+      			document.forms[0].action = "${basePath}nsfw/user/importExcel";
+          		document.forms[0].submit();
+      		}
       	}
       	var list_url = "${basePath}nsfw/user_listUI.action";
     	//搜索
@@ -52,8 +56,7 @@
     </script>
 </head>
 <body class="rightBody">
-	<form name="form1" action="" method="post"
-		enctype="multipart/form-data">
+	<form name="form1" action="" method="post" enctype="multipart/form-data">
 		<div class="p_d_1">
 			<div class="p_d_1_1">
 				<div class="content_info">
@@ -63,24 +66,27 @@
 						</div>
 					</div>
 					<div class="search_art">
-						<li>用户名：<input type="text" name="userName" id="userName" >
+						<li>
+							用户名：<input type="text" name="userName" id="userName" >
 						</li>
-						<li><input type="button" class="s_button" value="搜 索"
-							onclick="doSearch()" /></li>
-						<li style="float: right;"><input type="button" value="新增"
-							class="s_button" onclick="doAdd()" />&nbsp; <input type="button"
-							value="删除" class="s_button" onclick="doDeleteAll()" />&nbsp; <input
-							type="button" value="导出" class="s_button"
-							onclick="doExportExcel()" />&nbsp; <input name="userExcel"
-							type="file" /> <input type="button" value="导入" class="s_button"
-							onclick="doImportExcel()" />&nbsp;</li>
+						<li>
+							<input type="submit" class="s_button" value="搜 索"/>
+						</li>
+						<li style="float:right">
+							<input type="button" value="新增" class="s_button" onclick="doAdd()" />&nbsp; 
+							<input type="button" value="删除" class="s_button" onclick="doDeleteAll()" />&nbsp; 
+							<input type="button" value="导出" class="s_button" onclick="doExportExcel()" />&nbsp; 
+							<input id="file1" name="file" type="file" /> 
+							<input type="button" value="导入" class="s_button" onclick="doImportExcel()" />&nbsp;
+						</li>
 					</div>
 
 					<div class="t_list" style="margin: 0px; border: 0px none;">
 						<table width="100%" border="0">
 							<tr class="t_tit">
-								<td width="30" align="center"><input type="checkbox"
-									id="selAll" onclick="doSelectAll()" /></td>
+								<td width="30" align="center">
+									<input type="checkbox" id="selAll" onclick="doSelectAll()" />
+								</td>
 								<td width="140" align="center">用户名</td>
 								<td width="140" align="center">帐号</td>
 								<td width="160" align="center">所属部门</td>
@@ -97,9 +103,10 @@
 									<td align="center">${user.dept }</td>
 									<td align="center">${user.gender == true ? '男':'女' }</td>
 									<td align="center">${user.email }</td>
-									<td align="center"><a
-										href="javascript:doEdit('${user.id }')">编辑</a> <a
-										href="javascript:doDelete('${user.id }')">删除</a></td>
+									<td align="center">
+										<a href="javascript:doEdit('${user.id }')">编辑</a>
+										<a href="javascript:doDelete('${user.id }')">删除</a>
+									</td>
 								</tr>
 							</c:forEach>
 						</table>
@@ -112,13 +119,38 @@
 				<c:if test="${userPage.pageNum > 1}">
 					<a href="${basePath}nsfw/user/listUI?pageNum=${userPage.pageNum - 1}">上一页</a>
 				</c:if>
-				<c:if test="${userPage.pageNum < page.pages }">
+				<c:if test="${userPage.pageNum < userPage.pages }">
 					<a href="${basePath}nsfw/user/listUI?pageNum=${userPage.pageNum + 1}">下一页</a>
 				</c:if>
 				<a href="${basePath}nsfw/user/listUI?pageNum=${userPage.pages}">尾页</a>
 			</div>
 		</div>
 	</form>
-
 </body>
+<script type="text/javascript">
+function doDeleteAll(){
+	
+	var selects = $("input[name='selectedRow']:checked");
+	var userIds = new Array(); 
+	for(var i = 0 ; i < selects.length ; i ++){
+		userIds.push(selects[i].value);
+	}
+	if(userIds.length > 0 ){
+		$.ajax({
+			url:"${basePath}nsfw/user/deleteUsers",
+			type:"get",
+			data:{"userIds":userIds},
+			traditional: true,//这里设置为true
+			success:function(data){
+				if(data.code == 1){
+					window.location.href="${basePath}nsfw/user/listUI";
+				}else{
+					alert("删除失败");
+				}
+			}
+		})
+	}
+	return ;
+}
+</script>
 </html>

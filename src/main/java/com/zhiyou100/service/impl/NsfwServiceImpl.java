@@ -10,6 +10,7 @@ import com.zhiyou100.pojo.Role;
 import com.zhiyou100.pojo.User;
 import com.zhiyou100.service.NsfwService;
 import com.zhiyou100.util.FileIdUtil;
+import com.zhiyou100.util.ResultUtil;
 
 @Service
 public class NsfwServiceImpl implements NsfwService{
@@ -18,9 +19,9 @@ public class NsfwServiceImpl implements NsfwService{
 	NsfwMapper nsfwMapper;
 
 	@Override
-	public List<Role> selectAllRoles() {
+	public List<Role> selectAllRoles(String selectName) {
 
-		return nsfwMapper.selectAllRoles();
+		return nsfwMapper.selectAllRoles(selectName);
 	}
 
 	@Override
@@ -71,6 +72,14 @@ public class NsfwServiceImpl implements NsfwService{
 	public int roleDeleteRole(String roleId) {
 		// TODO Auto-generated method stub
 		return nsfwMapper.roleDeleteRole(roleId);
+	}
+
+	@Override
+	public ResultUtil roleDeleteRoles(String[] roleIds) {
+		for(int i = 0 ; i < roleIds.length ; i ++){
+			int num = nsfwMapper.roleDeleteRole(roleIds[i]);
+		}
+		return ResultUtil.success();
 	}
 
 }

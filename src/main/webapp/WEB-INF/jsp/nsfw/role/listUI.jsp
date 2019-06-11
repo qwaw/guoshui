@@ -47,8 +47,7 @@
 							角色名称：
 							<input type="text" name="selectName" id="selectName">
 						</li>
-						<li><input type="button" class="s_button" value="搜 索"
-							onclick="doSearch()" /></li>
+						<li><input type="submit" class="s_button" value="搜 索"/></li>
 						<li style="float: right;">
 							<input type="button" value="新增" onclick="doAdd()" />&nbsp; 
 							<input type="button" value="删除" onclick="doDeleteAll()" />&nbsp;
@@ -102,7 +101,7 @@
 <script type="text/javascript">
 function doDeleteAll(){
 	
-	var selects =	$("input[name='selectedRow']:checked");
+	var selects = $("input[name='selectedRow']:checked");
 	var roleIds = new Array(); 
 	for(var i = 0 ; i < selects.length ; i ++){
 		roleIds.push(selects[i].value);

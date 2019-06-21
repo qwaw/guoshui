@@ -44,7 +44,7 @@
             <td class="tdBg">投诉时间：</td>
             <td>
             	<s:date name="complain.compTime" format="yyyy-MM-dd HH:mm"/>
-            </td>
+            </td>        
         </tr>
         <tr>
             <td class="tdBg">被投诉部门：</td>
